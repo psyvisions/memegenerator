@@ -1,6 +1,7 @@
 body
 {
   background: #000;
+  margin: 0;
 }
 
 #container
@@ -9,3 +10,44 @@ body
   width: 960px;
   margin: 0 auto;
 }
+
+#menu
+{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  background: #000;
+  overflow: hidden;
+}
+#menu li
+{
+  background: #000;
+  color: #fff;
+  float: left;
+  display: inline-block;
+  width: 150px;
+  text-align: center;
+}
+
+#menu li a
+{
+  text-decoration: none;
+  color: #fff;
+}
+
+#menu li a:hover
+{
+  color: #303d4d;
+}
+
+.clear
+{
+  clear: both;
+}
+
+h2
+{
+  color: #303d4d;
+}
+
