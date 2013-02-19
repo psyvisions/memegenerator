@@ -35,6 +35,12 @@ class Main extends ME_Controller {
 		$this->view = 'main/generate';
 	}
 	
+	public function contact()
+	{
+	  $this->template_file = 'template/main';
+		$this->view = 'main/contact';
+  }
+	
 	public function meme()
 	{
 	  $text = $this->input->post('text');

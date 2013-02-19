@@ -13,6 +13,7 @@
             <li><a href="/">Home</a></li>
             <li><a href="#">Gallery</a></li>
             <li><a href="/generate">Make your own!</a></li>
+            <li><a href="/contact">Contact us</a></li>
           </ul>
         </nav>
       </header>
