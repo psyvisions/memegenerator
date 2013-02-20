@@ -58,5 +58,12 @@ class ME_Controller extends CI_Controller implements ArrayAccess
       }else
           echo $this->load->view($this->view,$this->view_data,true);
   }
+  
+  public function check_login()
+  {
+    if(!($this->session->userdata('username') && $this->session->userdata('password')))
+      redirect('/login');
+  }
+  
     
 }

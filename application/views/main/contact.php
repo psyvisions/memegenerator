@@ -14,7 +14,7 @@
       </div>
       <div>
         <label for="comment">Comment: </label>
-        <textarea></textarea>
+        <textarea name="comment" id="comment"></textarea>
       </div>
       <div>
         <input type="submit" name="save" value="Submit" id="save" />

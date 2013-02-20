@@ -2,6 +2,8 @@
 <html>
   <head>
     <link rel="stylesheet" href="statics/css/styles.css" type="text/css" />
+    <script type="text/javascript" src="/statics/js/jquery.js"></script>
+    <?php if(isset($js_scripts)) print_js($js_scripts); ?>
   </head>
   <body>
     <div id="container">

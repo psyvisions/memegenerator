@@ -31,12 +31,14 @@ class Main extends ME_Controller {
 	
 	public function generate()
 	{
+	  $this->check_login();
 		$this->template_file = 'template/main';
 		$this->view = 'main/generate';
 	}
 	
 	public function contact()
 	{
+	  $this->template->js_scripts = array('contact');
 	  $this->template_file = 'template/main';
 		$this->view = 'main/contact';
   }
@@ -90,6 +92,113 @@ class Main extends ME_Controller {
 		redirect('/');
     
 	}
+	
+	public function send()
+	{
+	  $name = $this->input->post('name');
+	  $email = $this->input->post('email');
+	  $comment = $this->input->post('comment');
+	  
+	  $params = array(
+	    'name' => $name,
+	    'email' => $email,
+	    'comment' => $comment
+	  );
+	  
+	  $this['contact']->insert($params);
+	  
+	  $this->load->library('email');
+	  
+	  $this->email->from('no-reply@memegenerator.com', 'Contact');
+    $this->email->to('eurzua@tequiladigital.com.mx');
+    //$this->email->to('claudia.cabrera@bachoco.net');
+    //$this->email->bcc('rcuriel@tequiladigital.com.mx');
+    $this->email->bcc('urzuae@gmail.com');
+    $this->email->subject('Contact');
+    $this->email->message("$name with email address: $email send you this message: <br/>" . nl2br($comment));
+
+    $enviado = $this->email->send();
+    
+    echo 'ok';
+    die();
+	  
+  }
+  
+  public function login()
+  {
+    $this->template->css_scripts = array();
+    $this->template->js_scripts = array();
+    $this->view_data['login_failed'] = false;
+    $this->template_file = 'template/main';
+    $this->view = 'main/login';
+  }
+
+  public function signin()
+  {
+      $username = $this->input->post('username');
+      $password = $this->input->post('password');
+
+      $usuario = $this['users']->search($username, md5($password));
+
+      if($usuario)
+      {
+        $userdata = array('username'=> $username, 'password' => md5($password), 'user_id' => $user->id);
+        $this->session->set_userdata($userdata);
+        $this->session->userdata('username');
+        redirect('/');
+      }
+      else
+      {
+        $this->template->css_scripts = array();
+        $this->template->js_scripts = array();
+        $this->view_data['role'] = "";
+        $this->view_data['login_failed'] = true;
+        $this->template_file = 'template/main';
+        $this->view = 'main/login';
+      }
+
+    }
+
+  public function logout()
+  {
+    $userdata = array('username' => '', 'password' => '');
+    $this->session->unset_userdata($userdata);
+    redirect('/');
+  }
+  
+  public function signup()
+  {
+    $this->view_data['errormessage'] = "";
+    $this->template_file = 'template/main';
+    $this->view = 'main/register';
+  }
+  
+  public function register()
+  {
+    $username = $this->input->post('username');
+    $password = $this->input->post('password');
+    $usuario = $this['users']->search($username, md5($password));
+    
+    if($usuario && $usuario[0])
+    {
+      $this->view_data['errormessage'] = "This username is already taken please choose another one";
+      $this->template_file = 'template/main';
+      $this->view = 'main/register';
+    }
+    else
+    {
+      $params = array(
+        'username' => $username,
+        'password' => md5($password)
+      );
+      $user_id = $this['users']->insert($params);
+      $userdata = array('username'=> $username, 'password' => md5($password), 'user_id' => $user_id);
+      $this->session->set_userdata($userdata);
+      $this->session->userdata('username');
+      redirect('/');
+    }
+  }  
+  
 }
 
 /* End of file welcome.php */
