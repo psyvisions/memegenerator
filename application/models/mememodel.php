@@ -14,6 +14,7 @@ class MemeModel extends ME_Model
   
   public function getAll()
   {
+    $this->db->order_by('date','desc');
     $query = $this->db->get($this->table);
     return $query->result_array();
   }

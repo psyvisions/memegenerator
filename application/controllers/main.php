@@ -19,6 +19,7 @@ class Main extends ME_Controller {
 	 */
 	public function index()
 	{
+	  
 		$this->view_data['memes'] = $this['meme']->getAll();
 	  $this->template_file = 'template/main';
 		$this->view = 'main/index';
@@ -43,28 +44,54 @@ class Main extends ME_Controller {
 		$this->view = 'main/contact';
   }
 	
-	public function meme()
+	public function create()
 	{
 	  $text = $this->input->post('text');
 		$title = $this->input->post('title');
-		$image = $_FILES['fondo']['name'];		
+		$message = $this->input->post('message');
+		$image = $_FILES['fondo']['name'];
+		$image_type = $_FILES['fondo']['type'];
 		$date = date('Y-m-d');
 		
 		$params = array(
 			'title' => $title,
 			'text' => $text,
+			'message' => $message,
 			'image' => $image,
 			'date' => $date
 		);
-	  
+				
+		switch($image_type)
+	  {
+	    case 'image/png':
+	      $params['type'] = 'png';
+	      break;
+	    case 'image/jpeg':
+	      $params['type'] = 'jpg';
+	      break;
+	    case 'image/gif':
+	      $params['type'] = 'gif';
+	      break;
+	  }
+		
 		$meme_id = $this['meme']->insert($params);
 		
 	  move_uploaded_file($_FILES["fondo"]["tmp_name"], "statics/memes/temp/".$image);
 	  chmod("statics/memes/temp/".$image, 0777); 
 	  	  
 	  //header("Content-type: image/jpeg");
-	  
-    $imagen = imagecreatefromjpeg("statics/memes/temp/".$image);
+	  switch($image_type)
+	  {
+	    case 'image/png':
+	      $imagen = imagecreatefrompng("statics/memes/temp/".$image);
+	      break;
+	    case 'image/jpeg':
+	      $imagen = imagecreatefromjpeg("statics/memes/temp/".$image);
+	      break;
+	    case 'image/gif':
+	      $imagen = imagecreatefromgif("statics/memes/temp/".$image);
+	      break;
+	  }
 		
 		$size = getimagesize("statics/memes/temp/".$image);
 		
@@ -83,11 +110,23 @@ class Main extends ME_Controller {
 
     imagecopymerge($fondo, $imagen, 15,10,0,0, $size[0], $size[1], 100);
 		
-    imagejpeg($fondo, "statics/memes/created/".$meme_id.".jpg");
+		switch($image_type)
+	  {
+	    case 'image/png':
+	      imagepng($fondo, "statics/memes/created/".$meme_id.".png");
+	      break;
+	    case 'image/jpeg':
+	      imagejpeg($fondo, "statics/memes/created/".$meme_id.".jpg");
+	      break;
+	    case 'image/gif':
+	      imagegif($fondo, "statics/memes/created/".$meme_id.".gif");
+	      break;
+	  }
+	  
     imagedestroy($imagen);
     imagedestroy($fondo);
 		
-		chmod("statics/memes/created/".$meme_id.".jpg", 0777);
+		chmod("statics/memes/created/".$meme_id.".".$params['type'], 0777);
 		
 		redirect('/');
     
@@ -142,10 +181,10 @@ class Main extends ME_Controller {
 
       if($usuario)
       {
-        $userdata = array('username'=> $username, 'password' => md5($password), 'user_id' => $user->id);
+        $userdata = array('username'=> $username, 'password' => md5($password), 'user_id' => $usuario['id']);
         $this->session->set_userdata($userdata);
         $this->session->userdata('username');
-        redirect('/');
+        redirect('/meme');
       }
       else
       {
@@ -195,7 +234,7 @@ class Main extends ME_Controller {
       $userdata = array('username'=> $username, 'password' => md5($password), 'user_id' => $user_id);
       $this->session->set_userdata($userdata);
       $this->session->userdata('username');
-      redirect('/');
+      redirect('/meme');
     }
   }  
   

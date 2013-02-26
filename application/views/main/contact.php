@@ -3,7 +3,7 @@
   <div>
     <h3>Please fill this form to hear about you.</h3>
     
-    <form action="/send" method="post" id="contact_form">
+    <form action="/meme/send" method="post" id="contact_form">
       <div>
         <label for="name">Name: </label>
         <input type="text" name="name" value="" id="name"/>

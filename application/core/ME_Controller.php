@@ -50,6 +50,10 @@ class ME_Controller extends CI_Controller implements ArrayAccess
 
   public function _output($output)
   {
+    $this->view_data['username'] = "";
+	  if($this->session->userdata('username'))
+	    $this->view_data['username'] = $this->session->userdata('username');
+    
       if($this->view == null)
           show_error ('$this->view not defined');
       

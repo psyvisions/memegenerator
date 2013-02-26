@@ -4,7 +4,7 @@ class UsersModel extends ME_Model
   function __construct()
   {
     parent::__construct();
-    $this->table = 'Users';
+    $this->table = 'users';
   }
 
   public function search($usuario, $password)

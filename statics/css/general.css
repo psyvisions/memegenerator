@@ -56,3 +56,19 @@ h2
   
 }
 
+#user_bar
+{
+  background: #000;
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 5px;
+  margin: 3px;
+  color: #fff;
+}
+
+#user_bar a
+{
+  color: #fff;
+  text-decoration: none;
+}

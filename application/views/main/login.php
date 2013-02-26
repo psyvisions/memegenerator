@@ -7,7 +7,7 @@
 <?php } ?>
 
 <div id="login">
-  <form method="post" action="/signin">
+  <form method="post" action="/meme/signin">
     <div>
       <label for="username">Username: </label><br/>
       <input type="text" name="username" id="username" class="input_text" />
